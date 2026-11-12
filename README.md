@@ -59,7 +59,9 @@ In Mongo Express, open database `currency_etl`, collection `exchange_rates`. Con
 To inspect records from a container:
 
 ```bash
-astro dev bash --scheduler "python scripts/verify_mongo.py"
+astro dev bash --scheduler
+# Inside that shell:
+python scripts/verify_mongo.py
 ```
 
 Rerunning the pipeline updates matching records instead of inserting duplicate currency/date rows. API rates may be revised during a day, so an upsert deliberately refreshes the rate and retrieval timestamp.

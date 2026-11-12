@@ -37,7 +37,8 @@ jobs:
         run: |
           set -o pipefail
           astro dev run dags test currency_exchange_etl 2>&1 | tee evidence/docker-airflow-run.log
-          astro dev bash --scheduler "python scripts/verify_mongo.py" > evidence/docker-mongodb-before.txt
+          scheduler_id=$(docker ps -q --filter label=com.docker.compose.service=scheduler)
+          docker exec "$scheduler_id" python /usr/local/airflow/scripts/verify_mongo.py > evidence/docker-mongodb-before.txt
           grep -q 'Document count: 3' evidence/docker-mongodb-before.txt
       - name: Verify Mongo Express, networking and restart persistence
         run: |
@@ -54,7 +55,8 @@ jobs:
             if docker exec "$mongo_id" mongosh --quiet --eval 'quit(db.adminCommand("ping").ok ? 0 : 1)' > /dev/null 2>&1; then break; fi
             sleep 2
           done
-          astro dev bash --scheduler "python scripts/verify_mongo.py" > evidence/docker-mongodb-after.txt
+          scheduler_id=$(docker ps -q --filter label=com.docker.compose.service=scheduler)
+          docker exec "$scheduler_id" python /usr/local/airflow/scripts/verify_mongo.py > evidence/docker-mongodb-after.txt
           grep -q 'Document count: 3' evidence/docker-mongodb-after.txt
           echo 'PASS: Mongo Express HTTP 200; shared network; named volumes; three records preserved after MongoDB container restart.' | tee evidence/docker-result.txt
       - uses: actions/setup-node@v4

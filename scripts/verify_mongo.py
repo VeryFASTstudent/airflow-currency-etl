@@ -1,5 +1,5 @@
-"""Inspect records after a run: astro dev bash --scheduler "python scripts/verify_mongo.py".
-Alternatively open an interactive shell with astro dev bash and run Python there.
+"""Inspect records after a run: open astro dev bash --scheduler,
+then execute python scripts/verify_mongo.py inside the shell.
 """
 import json
 import os
