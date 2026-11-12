@@ -1,0 +1,87 @@
+{
+  "live_api": true,
+  "mongodb_version": "7.0.16",
+  "records": [
+    {
+      "base_currency": "EUR",
+      "target_currency": "GBP",
+      "rate_date": "2026-11-12",
+      "exchange_rate": 0.83582,
+      "retrieved_at": "2026-11-12T14:21:53.521686+00:00",
+      "source": "Frankfurter API"
+    },
+    {
+      "base_currency": "EUR",
+      "target_currency": "JPY",
+      "rate_date": "2026-11-12",
+      "exchange_rate": 177.34,
+      "retrieved_at": "2026-11-12T14:21:53.521686+00:00",
+      "source": "Frankfurter API"
+    },
+    {
+      "base_currency": "EUR",
+      "target_currency": "USD",
+      "rate_date": "2026-11-12",
+      "exchange_rate": 1.1134,
+      "retrieved_at": "2026-11-12T14:21:53.521686+00:00",
+      "source": "Frankfurter API"
+    }
+  ],
+  "count_before_rerun": 3,
+  "count_after_rerun": 3,
+  "rerun_summary": {
+    "processed": 3,
+    "inserted": 0,
+    "matched": 3,
+    "modified": 0
+  },
+  "indexes": {
+    "_id_": {
+      "v": 2,
+      "key": [
+        [
+          "_id",
+          1
+        ]
+      ]
+    },
+    "unique_currency_date": {
+      "v": 2,
+      "key": [
+        [
+          "base_currency",
+          1
+        ],
+        [
+          "target_currency",
+          1
+        ],
+        [
+          "rate_date",
+          1
+        ]
+      ],
+      "unique": true
+    }
+  },
+  "tasks": [
+    {
+      "task_id": "extract_currency_exchange_rates",
+      "state": "success"
+    },
+    {
+      "task_id": "load_data_into_mongodb",
+      "state": "success"
+    },
+    {
+      "task_id": "transform_exchange_rate_data",
+      "state": "success"
+    }
+  ],
+  "dag_state": "success",
+  "xcom_keys": [
+    "load_summary",
+    "raw_exchange_rates",
+    "transformed_exchange_rates"
+  ]
+}

@@ -1,0 +1,1 @@
+Initialized empty Astro project in /tmp/astro-currency-scaffold

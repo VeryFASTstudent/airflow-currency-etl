@@ -1,0 +1,48 @@
+2026-11-12T14:21:46.196180Z [info     ] setup plugin alembic.autogenerate.schemas [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196382Z [info     ] setup plugin alembic.autogenerate.tables [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196446Z [info     ] setup plugin alembic.autogenerate.types [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196491Z [info     ] setup plugin alembic.autogenerate.constraints [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196530Z [info     ] setup plugin alembic.autogenerate.defaults [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196567Z [info     ] setup plugin alembic.autogenerate.comments [alembic.runtime.plugins] loc=plugins.py:37
+2026-11-12T14:21:46.196599Z [info     ] setup plugin alembic.ext.checkconstraint_byname [alembic.runtime.plugins] loc=plugins.py:37
+/workspace/scratch/992f4876b7c9/.venv/lib/python3.12/site-packages/airflow/cli/commands/dag_command.py:49 UserWarning: Could not import graphviz. Rendering graph to the graphical format will not be possible. 
+You might need to install the graphviz package and necessary system packages.
+Run `pip install graphviz` to attempt to install it.
+2026-11-12T14:21:46.842938Z [info     ] DAG bundles loaded: dags-folder [airflow.dag_processing.bundles.manager.DagBundlesManager] loc=manager.py:179
+/workspace/scratch/992f4876b7c9/.venv/lib/python3.12/site-packages/airflow/dag_processing/bundles/manager.py:203 SADeprecationWarning: The ``noload`` loader strategy is deprecated and will be removed in a future release.  This option produces incorrect results by returning ``None`` for related items. (deprecated since: 2.1) (This warning originated from the `configure_mappers()` process, which was invoked automatically in response to a user-initiated operation.)
+2026-11-12T14:21:46.932942Z [info     ] Added new DAG bundle dags-folder to the database [airflow.dag_processing.bundles.manager.DagBundlesManager] loc=manager.py:222
+2026-11-12T14:21:46.934392Z [info     ] Filling up the DagBag from /workspace/scratch/992f4876b7c9/airflow-currency-etl/dags [airflow.models.dagbag.DagBag] loc=dagbag.py:593
+2026-11-12T14:21:47.005758Z [info     ] Sync 1 DAGs                    [airflow.serialization.serialized_objects] loc=serialized_objects.py:2890
+2026-11-12T14:21:47.013424Z [info     ] Creating ORM DAG for currency_exchange_etl [airflow.dag_processing.collection] loc=collection.py:89
+2026-11-12T14:21:47.020488Z [info     ] Setting next_dagrun for currency_exchange_etl to 2026-11-11 18:00:00+00:00, run_after=2026-11-11 18:00:00+00:00 [airflow.models.dag] loc=dag.py:688
+2026-11-12T14:21:47.066382Z [info     ] Created dag run.               [airflow.models.dagrun] dagrun=<DagRun currency_exchange_etl @ 2026-11-12 14:21:46.842235+00:00: manual__2026-11-12T14:21:47.053328+00:00, state:running, queued_at: None. run_type: manual> loc=dagrun.py:2188
+2026-11-12T14:21:47.079838Z [info     ] [DAG TEST] starting task_id=extract_currency_exchange_rates map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1369
+2026-11-12T14:21:47.080182Z [info     ] [DAG TEST] running task <TaskInstance: currency_exchange_etl.extract_currency_exchange_rates manual__2026-11-12T14:21:47.053328+00:00 [TaskInstanceState.SCHEDULED]> [airflow.sdk.definitions.dag] loc=dag.py:1372
+/workspace/scratch/992f4876b7c9/.venv/lib/python3.12/site-packages/airflow/api_fastapi/execution_api/routes/__init__.py:23 DeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+2026-11-12T14:21:48.788803Z [info     ] Task started                   [airflow.api_fastapi.execution_api.routes.task_instances] hostname=80ce21d1b7fc loc=task_instances.py:199 previous_state=queued ti_id=01a1d022-d8bb-7b51-806c-ed708941910d
+2026-11-12T14:21:48.791171Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:212 rows_affected=1 ti_id=01a1d022-d8bb-7b51-806c-ed708941910d
+2026-11-12T14:21:48.807349Z [info     ] Updating RenderedTaskInstanceFields [airflow.api_fastapi.execution_api.routes.task_instances] field_count=3 loc=task_instances.py:672 ti_id=01a1d022-d8bb-7b51-806c-ed708941910d
+2026-11-12T14:21:53.542697Z [info     ] Extracted 3 rates              [root] loc=currency_exchange_etl.py:22
+2026-11-12T14:21:53.543466Z [info     ] Done. Returned value was: None [airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator] loc=python.py:218
+2026-11-12T14:21:53.558151Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:409 new_state=success rows_affected=1 ti_id=01a1d022-d8bb-7b51-806c-ed708941910d
+2026-11-12T14:21:53.564038Z [info     ] [DAG TEST] end task task_id=extract_currency_exchange_rates map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1426
+2026-11-12T14:21:53.568957Z [info     ] [DAG TEST] starting task_id=transform_exchange_rate_data map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1369
+2026-11-12T14:21:53.569114Z [info     ] [DAG TEST] running task <TaskInstance: currency_exchange_etl.transform_exchange_rate_data manual__2026-11-12T14:21:47.053328+00:00 [TaskInstanceState.SCHEDULED]> [airflow.sdk.definitions.dag] loc=dag.py:1372
+2026-11-12T14:21:54.802880Z [info     ] Task started                   [airflow.api_fastapi.execution_api.routes.task_instances] hostname=80ce21d1b7fc loc=task_instances.py:199 previous_state=queued ti_id=01a1d022-d8bc-7520-9a4d-0a244f357cb5
+2026-11-12T14:21:54.803928Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:212 rows_affected=1 ti_id=01a1d022-d8bc-7520-9a4d-0a244f357cb5
+2026-11-12T14:21:54.813184Z [info     ] Updating RenderedTaskInstanceFields [airflow.api_fastapi.execution_api.routes.task_instances] field_count=3 loc=task_instances.py:672 ti_id=01a1d022-d8bc-7520-9a4d-0a244f357cb5
+2026-11-12T14:21:54.829284Z [info     ] Transformed 3 validated documents [root] loc=currency_exchange_etl.py:30
+2026-11-12T14:21:54.829435Z [info     ] Done. Returned value was: None [airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator] loc=python.py:218
+2026-11-12T14:21:54.834897Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:409 new_state=success rows_affected=1 ti_id=01a1d022-d8bc-7520-9a4d-0a244f357cb5
+2026-11-12T14:21:54.838724Z [info     ] [DAG TEST] end task task_id=transform_exchange_rate_data map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1426
+2026-11-12T14:21:54.841694Z [info     ] [DAG TEST] starting task_id=load_data_into_mongodb map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1369
+2026-11-12T14:21:54.841770Z [info     ] [DAG TEST] running task <TaskInstance: currency_exchange_etl.load_data_into_mongodb manual__2026-11-12T14:21:47.053328+00:00 [TaskInstanceState.SCHEDULED]> [airflow.sdk.definitions.dag] loc=dag.py:1372
+2026-11-12T14:21:56.196255Z [info     ] Task started                   [airflow.api_fastapi.execution_api.routes.task_instances] hostname=80ce21d1b7fc loc=task_instances.py:199 previous_state=queued ti_id=01a1d022-d8bd-73cf-8f11-0fa19e5763bb
+2026-11-12T14:21:56.196903Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:212 rows_affected=1 ti_id=01a1d022-d8bd-73cf-8f11-0fa19e5763bb
+2026-11-12T14:21:56.208620Z [info     ] Updating RenderedTaskInstanceFields [airflow.api_fastapi.execution_api.routes.task_instances] field_count=3 loc=task_instances.py:672 ti_id=01a1d022-d8bd-73cf-8f11-0fa19e5763bb
+2026-11-12T14:21:56.233929Z [info     ] MongoDB load summary: {'processed': 3, 'inserted': 3, 'matched': 0, 'modified': 0} [root] loc=currency_exchange_etl.py:40
+2026-11-12T14:21:56.234142Z [info     ] Done. Returned value was: None [airflow.task.operators.airflow.providers.standard.decorators.python._PythonDecoratedOperator] loc=python.py:218
+2026-11-12T14:21:56.241860Z [info     ] Task instance state updated    [airflow.api_fastapi.execution_api.routes.task_instances] loc=task_instances.py:409 new_state=success rows_affected=1 ti_id=01a1d022-d8bd-73cf-8f11-0fa19e5763bb
+2026-11-12T14:21:56.246015Z [info     ] [DAG TEST] end task task_id=load_data_into_mongodb map_index=-1 [airflow.sdk.definitions.dag] loc=dag.py:1426
+2026-11-12T14:21:56.247101Z [info     ] Marking run <DagRun currency_exchange_etl @ 2026-11-12 14:21:46.842235+00:00: manual__2026-11-12T14:21:47.053328+00:00, state:running, queued_at: None. run_type: manual> successful [airflow.models.dagrun.DagRun] loc=dagrun.py:1204
+2026-11-12T14:21:56.247204Z [info     ] DagRun Finished: dag_id=currency_exchange_etl, logical_date=2026-11-12 14:21:46.842235+00:00, run_id=manual__2026-11-12T14:21:47.053328+00:00, run_start_date=2026-11-12 14:21:46.842235+00:00, run_end_date=2026-11-12 14:21:56.247164+00:00, run_duration=9.404929, state=success, run_type=manual, data_interval_start=2026-11-12 14:21:46.842235+00:00, data_interval_end=2026-11-12 14:21:46.842235+00:00, [airflow.models.dagrun.DagRun] loc=dagrun.py:1274

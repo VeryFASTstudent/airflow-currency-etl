@@ -29,13 +29,13 @@ The DAG loads the latest *published* rates. It preserves the API's `date` as `ra
 The project is already initialized; **do not run `astro dev init` over these files**.
 
 ```bash
-cp .env.example .env
+python scripts/configure_env.py
 astro config set container.binary docker
 astro dev start
 astro dev ps
 ```
 
-`.env.example` contains assignment-only local credentials. If changing MongoDB credentials, update both the root settings and `MONGO_URI`; URL-encode special characters in URI passwords. Existing initialized volumes retain their previous MongoDB credentials.
+`scripts/configure_env.py` creates .env with randomly generated local credentials and refuses to overwrite an existing file. `.env.example` contains no passwords. If changing MongoDB credentials, update both the root settings and `MONGO_URI`; URL-encode special characters in URI passwords. Existing initialized volumes retain their previous MongoDB credentials.
 
 Astro CLI merges `docker-compose.override.yml` into its Airflow stack. Both additional services join Astro's project-scoped `airflow` bridge network. MongoDB uses the DNS service name `mongodb` from Airflow and Mongo Express; `localhost` would refer to each individual container. MongoDB is not exposed on a host port. Mongo Express binds only to host loopback port 8081.
 

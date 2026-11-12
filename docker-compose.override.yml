@@ -1,0 +1,53 @@
+# Astro CLI merges these services with its generated Airflow Compose stack.
+# Airflow, MongoDB and Mongo Express share the project-scoped airflow network.
+services:
+  mongodb:
+    image: mongo:7.0.16
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-etl_admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Run python scripts/configure_env.py}
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    networks: [airflow]
+    labels:
+      assignment.owner: VeryFASTstudent
+      assignment.role: primary-database
+      assignment.network: project-airflow-bridge
+      assignment.storage: mongodb-data-and-config-named-volumes
+    healthcheck:
+      test: [CMD, mongosh, --quiet, --eval, "quit(db.adminCommand('ping').ok ? 0 : 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+  mongo-express:
+    image: mongo-express:1.0.2
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USERNAME:-etl_admin}:${MONGO_ROOT_PASSWORD:?Run python scripts/configure_env.py}@mongodb:27017/?authSource=admin
+      ME_CONFIG_BASICAUTH_ENABLED: 'true'
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_USERNAME:-viewer}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_PASSWORD:?Run python scripts/configure_env.py}
+    ports: ['127.0.0.1:8081:8081']
+    networks: [airflow]
+    labels:
+      assignment.owner: VeryFASTstudent
+      assignment.role: database-administration
+      assignment.network: project-airflow-bridge
+volumes:
+  mongodb-data:
+    labels:
+      assignment.storage: persistent-currency-records
+  mongodb-config:
+    labels:
+      assignment.storage: persistent-mongodb-configuration
+networks:
+  airflow:
+    driver: bridge
+    labels:
+      assignment.owner: VeryFASTstudent
