@@ -30,6 +30,9 @@ The project is already initialized; **do not run `astro dev init` over these fil
 
 ```bash
 python scripts/configure_env.py
+set -a
+source .env
+set +a
 astro config set container.binary docker
 astro dev start
 astro dev ps
@@ -37,7 +40,7 @@ astro dev ps
 
 `scripts/configure_env.py` creates .env with randomly generated local credentials and refuses to overwrite an existing file. `.env.example` contains no passwords. If changing MongoDB credentials, update both the root settings and `MONGO_URI`; URL-encode special characters in URI passwords. Existing initialized volumes retain their previous MongoDB credentials.
 
-Astro CLI merges `docker-compose.override.yml` into its Airflow stack. Both additional services join Astro's project-scoped `airflow` bridge network. MongoDB uses the DNS service name `mongodb` from Airflow and Mongo Express; `localhost` would refer to each individual container. MongoDB is not exposed on a host port. Mongo Express binds only to host loopback port 8081.
+Export `.env` into the shell as shown above before starting or restarting Astro; these exported variables are required for Compose interpolation. Astro CLI merges `docker-compose.override.yml` into its Airflow stack. Both additional services join Astro's project-scoped `airflow` bridge network. MongoDB uses the DNS service name `mongodb` from Airflow and Mongo Express; `localhost` would refer to each individual container. MongoDB is not exposed on a host port. Mongo Express binds only to host loopback port 8081.
 
 Open Airflow using the URL and credentials printed by `astro dev start` (commonly localhost:8080). Open Mongo Express at http://localhost:8081 and use `ME_USERNAME` / `ME_PASSWORD` from `.env`.
 

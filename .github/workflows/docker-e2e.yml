@@ -28,6 +28,9 @@ jobs:
       - name: Generate local credentials and start Docker stack
         run: |
           python scripts/configure_env.py
+          set -a
+          source .env
+          set +a
           astro config set container.binary docker
           astro dev start --no-browser --no-proxy --wait 8m
       - name: Execute the three-task DAG
