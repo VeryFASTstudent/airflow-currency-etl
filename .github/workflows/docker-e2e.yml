@@ -1,0 +1,77 @@
+name: Docker end-to-end validation
+on:
+  push:
+    paths:
+      - 'dags/**'
+      - 'scripts/**'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - 'docker-compose.override.yml'
+      - '.github/workflows/docker-e2e.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  docker-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Astro CLI from official release
+        run: |
+          curl -fsSL https://github.com/astronomer/astro-cli/releases/download/v1.47.0/astro_1.47.0_linux_amd64.tar.gz -o /tmp/astro.tgz
+          tar -xzf /tmp/astro.tgz -C /tmp astro
+          sudo install /tmp/astro /usr/local/bin/astro
+          astro version
+      - name: Generate local credentials and start Docker stack
+        run: |
+          python scripts/configure_env.py
+          astro config set container.binary docker
+          astro dev start --no-browser --no-proxy --wait 8m
+      - name: Execute the three-task DAG
+        run: |
+          set -o pipefail
+          astro dev run dags test currency_exchange_etl 2>&1 | tee evidence/docker-airflow-run.log
+          astro dev bash --scheduler "python scripts/verify_mongo.py" > evidence/docker-mongodb-before.txt
+          grep -q 'Document count: 3' evidence/docker-mongodb-before.txt
+      - name: Verify Mongo Express, networking and restart persistence
+        run: |
+          set -a
+          source .env
+          set +a
+          test "$(curl -s -o /dev/null -w '%{http_code}' -u "$ME_USERNAME:$ME_PASSWORD" http://127.0.0.1:8081/)" = 200
+          mongo_id=$(docker ps -q --filter label=com.docker.compose.service=mongodb)
+          test -n "$mongo_id"
+          docker inspect "$mongo_id" --format '{{json .Mounts}}' > evidence/docker-volumes.json
+          docker inspect "$mongo_id" --format '{{json .NetworkSettings.Networks}}' > evidence/docker-network.json
+          docker restart "$mongo_id"
+          for attempt in $(seq 1 30); do
+            if docker exec "$mongo_id" mongosh --quiet --eval 'quit(db.adminCommand("ping").ok ? 0 : 1)' > /dev/null 2>&1; then break; fi
+            sleep 2
+          done
+          astro dev bash --scheduler "python scripts/verify_mongo.py" > evidence/docker-mongodb-after.txt
+          grep -q 'Document count: 3' evidence/docker-mongodb-after.txt
+          echo 'PASS: Mongo Express HTTP 200; shared network; named volumes; three records preserved after MongoDB container restart.' | tee evidence/docker-result.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Capture actual web interface screenshots
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+          set -a
+          source .env
+          set +a
+          node scripts/ci_screenshots.cjs
+      - name: Save runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-runtime-evidence
+          path: |
+            evidence/docker-*
+            evidence/06_mongo_express_ui.png
+            evidence/07_airflow_ui.png
+          retention-days: 14
