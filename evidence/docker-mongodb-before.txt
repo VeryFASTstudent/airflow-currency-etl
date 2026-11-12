@@ -1,0 +1,56 @@
+Document count: 3
+[
+  {
+    "base_currency": "EUR",
+    "rate_date": "2026-11-12",
+    "target_currency": "GBP",
+    "exchange_rate": 0.83581,
+    "retrieved_at": "2026-11-12T14:36:29.088417+00:00",
+    "source": "Frankfurter API"
+  },
+  {
+    "base_currency": "EUR",
+    "rate_date": "2026-11-12",
+    "target_currency": "JPY",
+    "exchange_rate": 177.33,
+    "retrieved_at": "2026-11-12T14:36:29.088417+00:00",
+    "source": "Frankfurter API"
+  },
+  {
+    "base_currency": "EUR",
+    "rate_date": "2026-11-12",
+    "target_currency": "USD",
+    "exchange_rate": 1.1134,
+    "retrieved_at": "2026-11-12T14:36:29.088417+00:00",
+    "source": "Frankfurter API"
+  }
+]
+Indexes: {
+  "_id_": {
+    "v": 2,
+    "key": [
+      [
+        "_id",
+        1
+      ]
+    ]
+  },
+  "unique_currency_date": {
+    "v": 2,
+    "key": [
+      [
+        "base_currency",
+        1
+      ],
+      [
+        "target_currency",
+        1
+      ],
+      [
+        "rate_date",
+        1
+      ]
+    ],
+    "unique": true
+  }
+}

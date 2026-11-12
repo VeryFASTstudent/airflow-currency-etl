@@ -1,0 +1,16 @@
+{
+  "repository": "VeryFASTstudent/airflow-currency-etl",
+  "commit": "d3d73334e50212d436b3ac7ba4a01f00bee181af",
+  "run_id": 43238789241,
+  "run_url": "https://github.com/VeryFASTstudent/airflow-currency-etl/actions/runs/43238789241",
+  "conclusion": "success",
+  "checks": [
+    "Astro Docker stack startup",
+    "Three-task Airflow DAG execution",
+    "Mongo Express HTTP 200",
+    "Shared Docker network",
+    "Named volume mounts",
+    "Three records retained after MongoDB restart",
+    "Actual Airflow and Mongo Express screenshots"
+  ]
+}

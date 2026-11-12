@@ -80,9 +80,11 @@ astro dev pytest
 
 For tests outside Astro, install the project's requirements plus Airflow 3.1.2 and `dev-requirements.txt` in a virtual environment, then run `pytest -q`. The GitHub Actions workflow runs isolated ETL and Compose tests; the local validation also imports the actual DAG.
 
-See `evidence/validation.json`, `evidence/airflow-final-run.log`, and `evidence/pytest.txt` for recorded validation. Code/output PNGs are rendered captures of the corresponding source files and real terminal results; they are not Airflow or Mongo Express UI screenshots.
+See `evidence/validation.json`, `evidence/airflow-final-run.log`, and `evidence/pytest.txt` for recorded validation. Code/output PNGs 01-05 are rendered captures of the corresponding source files and real terminal results. PNGs 06-07 are actual screenshots of the Docker-hosted Mongo Express and Airflow interfaces.
 
-**Environment limits:** Docker and Mongo Express could not be started in the build workspace. Live execution was checked using Airflow 3.1.2, the actual Frankfurter API and MongoDB 7.0.16 running directly on Linux. Container startup, Docker-volume restart persistence and Mongo Express UI still require the Docker steps above. The report states these limits explicitly.
+**Docker validation:** GitHub Actions starts the real Astro Docker stack, executes all three tasks against the live API, verifies three stored records, checks Mongo Express returns HTTP 200, inspects network and named-volume mounts, restarts MongoDB and confirms all three records remain. Actual interface screenshots and runtime output are saved under `evidence/`. Native Linux validation also passed with Airflow 3.1.2 and MongoDB 7.0.16.
+
+Docker validation run: https://github.com/VeryFASTstudent/airflow-currency-etl/actions/runs/43238789241
 
 ## Submission
 
